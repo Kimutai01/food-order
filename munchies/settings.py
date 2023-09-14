@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'fontawesomefree',
+    'accounts',
 ]
 
 MIDDLEWARE = [
@@ -87,15 +88,17 @@ WSGI_APPLICATION = 'munchies.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': config("DB_NAME"),
         'USER' : config("DB_USER"),
         'PASSWORD' : config("DB_PASSWORD"),
         'HOST' : config("DB_HOST"),
-        'HOST': 'localhost',
+        'PORT' : '5432',
         
     }
 }
+
+AUTH_USER_MODEL = 'accounts.User'
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
