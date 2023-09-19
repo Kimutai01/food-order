@@ -5,8 +5,10 @@
     class="flex justify-between items-center w-full h-full md:px-4 py-4 px-2 2xl:px-16 rounded"
   >
     <div class="">
-      <a class="text-[#eee] font-bold text-3xl font-allura" href="">
-        Munchies</a
+      <a
+        class="text-[#eee] font-bold text-3xl font-allura"
+        href="{% url 'home' %}"
+        >Munchies</a
       >
     </div>
     <div>
@@ -27,36 +29,39 @@
         <li
           class="ml-10 font-medium text-[#eee] uppercase text-sm hover:text-[#cda873] hover:scale-105 transition-colors duration-300"
         >
-          <a href="">Clinics</a>
+          <a href="{% url 'home' %}">Restaurants</a>
         </li>
 
+        {% if user.is_authenticated %}
         <li
           class="ml-10 font-medium text-[#eee] uppercase text-sm hover:text-[#cda873] hover:scale-105 transition-all duration-all hover:border-y-black"
         >
-          <a href="">My account</a>
+          <a href="{% url 'myAccount' %}">My account</a>
         </li>
-
+        {% endif %}
         <li class="ml-10 font-medium text-[#eee] uppercase text-sm">
+          {% if user.is_authenticated %}
           <a
             class="px-2 py-1 hover:text-[#cda873] hover:scale-105 transition-all duration-all rounded-md font-medium"
-            href=""
+            href="{% url 'logout' %}"
           >
             Logout
           </a>
-
+          {% else %}
           <a>
             <span
               class="px-2 py-1 hover:text-[#cda873] hover:scale-105 transition-all duration-all rounded-md font-medium"
             >
-              <a href="">Register </a>
+              <a href="{% url 'register-user' %}">Register </a>
             </span>
 
             <span
               class="px-2 py-1 hover:text-[#cda873] hover:scale-105 transition-all duration-all rounded-md text-[#fff] font-medium"
             >
-              <a href="">Login</a>
+              <a href="{% url 'login' %}">Login</a>
             </span>
           </a>
+          {% endif %}
         </li>
       </ul>
       <div
@@ -72,7 +77,7 @@
         <button
           class="uppercase text-[#000] font-light font-barlow bg-[#fff] px-4 py-2 hover:bg-[#cda873] transition-all duration-300"
         >
-          <a href="">Register Clinic</a>
+          <a href="{% url 'register-vendor' %}">Register Restaurant</a>
         </button>
       </div>
     </div>
@@ -95,33 +100,36 @@
     <div>
       <div class="flex flex-col items-center text-[#fff] font-barlow py-4">
         <ul>
+          {% if user.is_authenticated %}
           <li class="ml-3 mt-10 text-xl uppercase">
-            <a href="">My account</a>
+            <a href="{% url 'myAccount' %}">My account</a>
           </li>
-
+          {% endif %} {% if user.is_authenticated %}
           <li class="ml-3 mt-10 text-xl uppercase">
             <a
               class="py-1 hover:text-[#cda873] hover:scale-105 transition-all duration-all rounded-md font-medium"
-              href=""
+              href="{% url 'logout' %}"
             >
               Logout
             </a>
           </li>
-
+          {% else %}
           <li class="ml-3 mt-10 text-xl uppercase">
             <a class="flex flex-col">
               <span
                 class="py-1 hover:text-[#cda873] hover:scale-105 transition-all duration-all rounded-md font-medium"
               >
-                <a href="">Register </a>
+                <a href="{% url 'register-user' %}">Register </a>
               </span>
 
               <span
                 class="px-2 py-1 hover:text-[#cda873] hover:scale-105 transition-all duration-all rounded-md text-[#fff] font-medium"
               >
-                <a href="">Login</a>
+                <a href="{% url 'login' %}">Login</a>
               </span>
             </a>
+
+            {% endif %}
           </li>
         </ul>
       </div>

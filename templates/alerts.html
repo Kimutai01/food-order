@@ -1,0 +1,29 @@
+{% load static %} {% if messages %} {% for message in messages %}
+<div
+  style="
+    position: fixed;
+    bottom: 100%;
+    right: 20px;
+    animation-name: show-toast;
+    animation-duration: 5s;
+  "
+  class="{{ message.tags }} flex items-center justify-between text-sm py-2 px-4 border rounded mb-4 shadow-lg my-2"
+>
+  <p>
+    <strong class="font-bold">{{ message }}</strong>
+  </p>
+  <button onclick="this.parentElement.style.display='none'">
+    <svg
+      class="fill-current h-6 w-6"
+      role="button"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 20 20"
+    >
+      <title>Close</title>
+      <path
+        d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.651-3.029-2.651-3.029a1.2 1.2 0 1 1 1.697-1.697l2.651 3.029 2.651-3.029a1.2 1.2 0 1 1 1.697 1.697l-2.651 3.029 2.651 3.029a1.2 1.2 0 0 1 0 1.697z"
+      />
+    </svg>
+  </button>
+</div>
+{% endfor %} {% endif %}

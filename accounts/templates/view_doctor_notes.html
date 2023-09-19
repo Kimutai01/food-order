@@ -1,0 +1,12 @@
+{% extends 'main.html' %} {% block content %} {% include 'alerts.html' %} {% for notes in notes %}
+<div class='mx-20 my-20'>
+    <h1 class='text-center font-bold text-3xl'>Doctor notes </h1>
+    {% if notes %}
+    <div class=" border  list-decimal">
+  <li>{{ notes }}</li>
+    </div>
+    {% else %}
+    <li>The vetinary doctor has not added notes</li>
+    {% endif %}
+</div>
+{% endfor %} {% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'main.html' %} {% block content %} {% include 'alerts.html' %}
+<form method="POST">
+  {% csrf_token %}
+
+  <div class="relative mb-4 mx-20 my-20">
+    {{form}}
+    <div class="text-right">
+      <button
+        class="mt-2 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+        type="submit"
+      >
+        Save
+      </button>
+    </div>
+  </div>
+</form>
+{% endblock %}

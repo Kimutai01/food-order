@@ -1,0 +1,6 @@
+{% autoescape off %} Hi {{ user.first_name }}, {% if is_approved %} Your
+vetinary clinic has been approved by our admin team, your clinic is now visible
+to customers {% else %} We're sorry to inform you that your vetinary clinic has
+been rejected by our admin team, please contact us for more information at
+support@vetclinic.com {% endif %} 
+{% endautoescape %}

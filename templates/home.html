@@ -2,11 +2,9 @@
 <div class="hero-bg">
   <div class="md:w-[50%] w-[80%]">
     <h2 class="text-center text-2xl text-[#ff5634]">
-      Find Restaurants, Bars, Hotels, and more
+      Find Restaurants around you
     </h2>
-    <h1 class="text-center text-5xl text-white">
-      Find the best places to eat, drink,
-    </h1>
+    <h1 class="text-center text-5xl text-white">Are you hungry</h1>
     <p class="text-gray-400 text-center mt-5">
       Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam
       voluptatibus, voluptatem, quibusdam, quia voluptates voluptatum voluptate
@@ -26,6 +24,7 @@
   <div
     class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-10 w-full"
   >
+    {% for clinic in clinics %}
     <div class="relative mx-auto w-full">
       <div
         class="relative inline-block duration-300 ease-in-out transition-transform transform hover:-translate-y-2 w-full"
@@ -39,7 +38,7 @@
             >
               <div class="">
                 <img
-                  src="https://plus.unsplash.com/premium_photo-1675302199061-3d34078f5638?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyfHx8ZW58MHx8fHx8&auto=format&fit=crop&w=800&q=60"
+                  src="{{ clinic.profile.profile_picture.url }}"
                   alt=""
                   class="w-full h-full object-cover"
                 />
@@ -47,12 +46,22 @@
             </div>
 
             <div class="absolute flex justify-center bottom-0 mb-3"></div>
+            {% if clinic.is_open %}
 
             <span
               class="absolute top-0 left-0 inline-flex mt-3 ml-3 px-3 py-2 rounded-lg z-10 bg-green-500 text-sm font-medium text-white select-none"
             >
               Open
             </span>
+            {% else %}
+
+            <span
+              class="absolute top-0 left-0 inline-flex mt-3 ml-3 px-3 py-2 rounded-lg z-10 bg-red-500 text-sm font-medium text-white select-none"
+            >
+              Closed
+            </span>
+
+            {% endif %}
           </div>
 
           <div class="mt-4">
@@ -60,18 +69,25 @@
               class="font-medium text-base md:text-lg text-gray-800 line-clamp-1"
               title="New York"
             >
-              title
+              {{ clinic.vendor_name }}
             </h2>
-            <p class="mt-2 text-sm text-gray-800">address</p>
+            <p class="mt-2 text-sm text-gray-800">
+              {{ clinic.profile.address }}
+            </p>
 
-            <p class="mt-2 text-sm text-gray-800 line-clamp-1">description</p>
+            <p class="mt-2 text-sm text-gray-800 line-clamp-1">
+              {{ clinic.profile.phone_number }}
+            </p>
             <button class="bg-[#ff5634] text-white rounded-md px-5 py-2 mt-5">
-              <a href=""> Book Appointment </a>
+              <a href="{% url 'appointments_booking' clinic.id %}">
+                Book Appointment
+              </a>
             </button>
           </div>
         </div>
       </div>
     </div>
+    {% endfor %}
   </div>
 </div>
 {% endblock %}

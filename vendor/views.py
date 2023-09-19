@@ -8,7 +8,7 @@ from .models import Vendor
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.exceptions import PermissionDenied
-from accounts.views import check_role_clinic, check_role_customer
+from accounts.views import check_role_restaurant, check_role_customer
 from .forms import VendorForm, OpeningHourForm, AppointmentForm, DoctorForm
 from .models import OpeningHour, Appointment, DoctorNote
 from django.http import JsonResponse
@@ -22,8 +22,8 @@ from accounts.utils import send_notification
     
     
 @login_required(login_url='login')
-@user_passes_test(check_role_clinic)
-def clinicProfile(request):
+@user_passes_test(check_role_restaurant)
+def restaurantProfile(request):
     profile = get_object_or_404(Profile, user=request.user)
     vendor = get_object_or_404(Vendor, user=request.user)
     profile_form = ProfileForm(instance=profile)
@@ -36,7 +36,7 @@ def clinicProfile(request):
             profile_form.save()
             vendor_form.save()
             messages.success(request, 'Your profile has been updated!')
-            redirect('clinic-profile')
+            redirect('restaurant-profile')
         else:
             print(profile_form.errors)
             print(vendor_form.errors)
@@ -52,7 +52,7 @@ def clinicProfile(request):
         'profile': profile,
         'vendor': vendor,
     }
-    return render(request, 'clinic_profile.html', context)
+    return render(request, 'restaurant_profile.html', context)
 
 def opening_hours(request):
     opening_hours = OpeningHour.objects.filter(vendor=request.user.vendor)
@@ -127,7 +127,7 @@ def add_opening_hours(request):
             return HttpResponse('Invalid request')
         
 @login_required(login_url='login')
-@user_passes_test(check_role_clinic)
+@user_passes_test(check_role_restaurant)
 def delete_opening_hours(request, pk):
     hour = get_object_or_404(OpeningHour, pk=pk)
     if request.method == 'POST':
@@ -139,10 +139,10 @@ def delete_opening_hours(request, pk):
 @login_required(login_url='login')
 @user_passes_test(check_role_customer)
 def appointment_booking(request, pk):
-    clinic = get_object_or_404(Vendor, pk=pk)
+    restaurant = get_object_or_404(Vendor, pk=pk)
     user=request.user
     
-    if user.appointment_set.filter(vendor=clinic).exists():
+    if user.appointment_set.filter(vendor=restaurant).exists():
         messages.warning(request, 'You already have an appointment with this clinic. Please cancel your current appointment to book a new one.')
         return redirect('customerDashboard')
     
@@ -153,7 +153,7 @@ def appointment_booking(request, pk):
             if form.is_valid():
                 appointment = form.save(commit=False)
                 appointment.user = user
-                appointment.vendor = clinic
+                appointment.vendor = restaurant
                 appointment.save()
                 messages.success(request, 'Your appointment has been booked!')
                 return redirect('customerDashboard')
@@ -164,7 +164,7 @@ def appointment_booking(request, pk):
             
     context = {
         'form': form,
-        'clinic': clinic,
+        'clinic': restaurant
     }
     return render(request, 'appointment_booking.html', context)
 

@@ -4,8 +4,8 @@ from . import views
 from accounts import views as accounts_views
 
 urlpatterns = [
-    path('', accounts_views.clinicDashboard, name='clinic'),
-    path('profile/', views.clinicProfile, name='clinic-profile'),
+    path('', accounts_views.restaurantDashboard, name='restaurant'),
+    path('profile/', views.restaurantProfile, name='restaurant-profile'),
     path('opening-hours/', views.opening_hours, name='opening-hours'),
     path('bookings/', views.bookings, name='bookings'),
     path('view-doctor-notes/<int:appointment_id>/', views.view_doctor_notes, name='view_doctor_notes'),

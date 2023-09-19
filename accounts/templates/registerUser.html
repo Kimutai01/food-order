@@ -1,0 +1,130 @@
+<!-- Tenant Signup Form -->
+{% extends 'main.html' %} {% block content %}
+<div class="flex justify-center bg-[#161616] pt-20 items-center">
+  <div class="max-w-md w-full px-6 py-4 bg-[#161616] rounded-lg shadow-md">
+    <h1
+      class="text-2xl font-bold mb-4 text-white text-center uppercase font-bold"
+      style="font-family: 'Gilda Display', serif"
+    >
+      User signup
+    </h1>
+    {% include 'alerts.html' %}
+
+    <form action="{% url 'register-user' %}" method="POST">
+      {% csrf_token %}
+      <div class="mb-4">
+        <label
+          for="{{ form.first_name.id_for_label }}"
+          class="block text-sm font-medium text-white uppercase"
+        >
+          First Name:
+        </label>
+
+        <input
+          type="text"
+          id="{{ form.first_name.id_for_label }}"
+          name="{{ form.first_name.name }}"
+          class="w-full px-3 py-2 border border-gray-300 rounded placeholder-gray-500 focus:outline-none focus:ring focus:border-blue-500"
+          placeholder="Your first name"
+        />
+      </div>
+      <div class="mb-4">
+        <label
+          for="{{ form.last_name.id_for_label }}"
+          class="block text-sm font-medium text-white uppercase"
+        >
+          Last Name:
+        </label>
+        {% comment %} {{ form.last_name }} {% endcomment %}
+        <input
+          type="text"
+          id="{{ form.last_name.id_for_label }}"
+          name="{{ form.last_name.name }}"
+          class="w-full px-3 py-2 border border-gray-300 rounded placeholder-gray-500 focus:outline-none focus:ring focus:border-blue-500"
+          placeholder="Your last name"
+        />
+      </div>
+
+      <div class="mb-4">
+        <label
+          for="{{ form.email.id_for_label }}"
+          class="block text-sm font-medium text-white uppercase"
+        >
+          Email:
+        </label>
+        {% comment %} {{ form.email }} {% endcomment %}
+        <input
+          type="email"
+          id="{{ form.email.id_for_label }}"
+          name="{{ form.email.name }}"
+          class="w-full px-3 py-2 border border-gray-300 rounded placeholder-gray-500 focus:outline-none focus:ring focus:border-blue-500"
+          placeholder="Enter your email"
+        />
+      </div>
+      <div class="mb-4">
+        <label
+          for="{{ form.username.id_for_label }}"
+          class="block text-sm font-medium text-white uppercase"
+        >
+          Username:
+        </label>
+        {% comment %} {{ form.username }} {% endcomment %}
+        <input
+          type="text"
+          id="{{ form.username.id_for_label }}"
+          name="{{ form.username.name }}"
+          class="w-full px-3 py-2 border border-gray-300 rounded placeholder-gray-500 focus:outline-none focus:ring focus:border-blue-500"
+          placeholder="Enter your username"
+        />
+      </div>
+
+      <div class="mb-4">
+        <label
+          for="{{ form.password1.id_for_label }}"
+          class="block text-sm font-medium text-white uppercase"
+        >
+          Password:
+        </label>
+        <input
+          type="password"
+          id="{{ form.password.id_for_label }}"
+          name="{{ form.password.name }}"
+          class="w-full px-3 py-2 border border-gray-300 rounded placeholder-gray-500 focus:outline-none focus:ring focus:border-blue-500"
+          placeholder="Enter your password"
+        />
+      </div>
+      <div class="mb-4">
+        <label
+          for="{{ form.confirm_password.id_for_label }}"
+          class="block text-sm font-medium text-white uppercase"
+        >
+          Confirm Password:
+        </label>
+        <input
+          type="password"
+          id="{{ form.password2.id_for_label }}"
+          name="{{ form.confirm_password.name }}"
+          class="w-full px-3 py-2 border border-gray-300 rounded placeholder-gray-500 focus:outline-none focus:ring focus:border-blue-500"
+          placeholder="Confirm your password"
+        />
+      </div>
+      <ul class="mb-4">
+        {% for field in form %} {% if field.errors %} {% for error in field.errors %}
+        <li class="text-red-500 text-sm">{{ error }}</li>
+        {% endfor %} {% endif %} {% endfor %}
+        <li class="text-red-500 text-sm">{{form.non_field_errors}}</li>
+      </ul>
+
+      <input
+        type="submit"
+        class="w-full px-4 py-2 bg-[#e3af5a] text-white hover:text-[#000] rounded-md hover:bg-[#fff]"
+        value="Signup"
+      />
+    </form>
+    <p class="mt-4 text-[#fff] font-medium">
+      Already registered!
+      <a href="{% url 'login' %}" class="text-[#e3af5a] hover:underline">Login Now</a>
+    </p>
+  </div>
+</div>
+{% endblock %}
