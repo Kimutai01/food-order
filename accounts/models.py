@@ -78,3 +78,27 @@ class User(AbstractBaseUser):
     
     def has_module_perms(self,app_label):
         return True
+    
+    def get_role(self):
+        if self.role == 1:
+            return 'Restaurant'
+        if self.role == 2:
+            return 'Customer'
+        
+    
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
+    profile_picture = models.ImageField(upload_to='profiles/', null=True, blank=True, default='profiles/default-user.png')
+    cover_picture = models.ImageField(upload_to='profiles/', null=True, blank=True, default='profiles/default-cover.png')
+    address = models.CharField(max_length=250, null=True, blank=True)
+    country = models.CharField(max_length=50, null=True, blank=True)
+    county = models.CharField(max_length=50, null=True, blank=True)
+    city = models.CharField(max_length=50, null=True, blank=True)
+    postal_code = models.CharField(max_length=10, null=True, blank=True)
+    longitude = models.CharField(max_length=50, null=True, blank=True)
+    latitude = models.CharField(max_length=50, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return self.user.email

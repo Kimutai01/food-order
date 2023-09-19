@@ -1,0 +1,146 @@
+{% extends 'main.html' %} {% load static %} {% block content %} {% include 'alerts.html' %}
+
+<div class="flex h-screen bg-gray-800">
+  <!-- Sidebar -->
+
+  {% include 'clinic_sidebar.html' %}
+  <div class='mx-28'>
+    <h2 class="text-white text-center pt-20 text-4xl font-extrabold uppercase">Opening hours</h2>
+    <div class="overflow-x-auto mt-10">
+      <table class="min-w-full text-[#fff] hours_table">
+        <thead>
+          <tr>
+            <th class="px-4 py-2">Day</th>
+            <th class="px-4 py-2">From Hour</th>
+            <th class="px-4 py-2">To Hour</th>
+      
+            <th class="px-4 py-2">Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for hour in opening_hours %}
+          <tr>
+            <td class="border px-4 py-2">{{ hour.get_day_display }}</td>
+            <td class="border px-4 py-2">
+              {% if hour.is_closed %} Closed {% else %} {{ hour.from_hour }} {% endif %}
+            </td>
+            <td class="border px-4 py-2">
+              {% if hour.is_closed %} Closed {% else %} {{ hour.to_hour }} {% endif %}
+            </td>
+
+            <td class="border px-4 py-2">
+              <form
+                action="{% url 'delete-opening-hour' hour.id %}"
+                method="POST"
+              >
+                {% csrf_token %}
+                <button
+                  class="px-4 py-2 font-bold text-red-500 rounded hover:text-red-700"
+                  type="submit"
+                >
+                  Delete
+                </button>
+              </form>
+            </td>
+          </tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <section
+      class="max-w-4xl p-6 pt-10 mx-auto bg-indigo-600 rounded-md shadow-md dark:bg-gray-800"
+    >
+      <h1 class="text-xl text-center font-bold text-white capitalize dark:text-white">
+        Add opening hour
+      </h1>
+      <form class='pt-10'>
+        {% csrf_token %}
+        <div class="flex gap-5" id="add_hour_form">
+          <div>
+            <label
+              class="text-white dark:text-gray-200"
+              for="passwordConfirmation"
+            >
+              Day
+            </label>
+            {{form.day}}
+          </div>
+          <div>
+            <label class="text-white dark:text-gray-200" for="from">
+              From hour
+            </label>
+            {{form.from_hour}}
+          </div>
+
+          <div>
+            <label
+              class="text-white dark:text-gray-200"
+              for="passwordConfirmation"
+            >
+              To hour
+            </label>
+            {{form.to_hour}}
+          </div>
+
+          <div class='mt-10'>
+            <label
+              class="text-white dark:text-gray-200"
+              for="passwordConfirmation"
+              >set as closed</label
+            >
+            {{form.is_closed}}
+          </div>
+        </div>
+
+        <div class="flex justify-end mt-6">
+          <input
+            type="hidden"
+            name="clinic_id"
+            value="{% url 'add-opening-hour' %}"
+            id="add_hour_url"
+          />
+          <button
+            class="px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-blue-500 rounded-md hover:bg-blue-700 focus:outline-none focus:bg-gray-600 add_hour"
+            type="submit"
+          >
+            Save
+          </button>
+        </div>
+      </form>
+    </section>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+  <script>
+    // ... (rest of your chart initialization scripts)
+  </script>
+
+  <script>
+    const sidebar = document.getElementById("sidebar");
+    const mobileSidebarBackdrop = document.getElementById(
+      "mobileSidebarBackdrop"
+    );
+    const mobileSidebar = document.getElementById("mobileSidebar");
+
+    function toggleSidebar() {
+      sidebar.classList.toggle("hidden");
+    }
+
+    function toggleMobileSidebar() {
+      if (mobileSidebar.style.transform === "translateX(-100%)") {
+        mobileSidebar.style.transform = "translateX(0)";
+        mobileSidebarBackdrop.style.display = "block";
+      } else {
+        mobileSidebar.style.transform = "translateX(-100%)";
+        mobileSidebarBackdrop.style.display = "none";
+      }
+    }
+  </script>
+
+  <script>
+    // ... (rest of your chart initialization scripts)
+  </script>
+
+  {% endblock %}
+</div>

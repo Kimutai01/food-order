@@ -1,0 +1,37 @@
+{% extends 'main.html' %} {% load static %} {% block content %} {% include 'alerts.html' %}
+<div class='hero-bg'>
+<section
+  class="max-w-4xl p-10 bg-gray-100 rounded-md shadow-md dark:bg-gray-800 mt-20"
+>
+<h1 class='text-center text-[#fff] uppercase font-bold'>Appointment</h1>
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
+      <div>
+        <label class="text-white dark:text-gray-200 uppercase" for="username">
+          date
+        </label>
+        {{form.date}}
+      </div>
+
+      <div>
+        <label class="text-white dark:text-gray-200 uppercase" for="username">
+          time
+        </label>
+        {{form.time}}
+      </div>
+    </div>
+
+    <div class="flex justify-end mt-6">
+      <button
+        class="px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-blue-500 rounded-md hover:bg-blue-700 focus:outline-none focus:bg-blue-600"
+        type="submit"
+      >
+        Book
+      </button>
+    </div>
+  </form>
+</section>
+</div>
+
+{% endblock %}
