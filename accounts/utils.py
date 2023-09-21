@@ -9,7 +9,7 @@ from django.conf import settings
 
 def detect_user(user):
     if user.role == 1:
-        redirect_url = reverse('clinicDashboard')  # Assuming you have a named URL pattern for clinicDashboard
+        redirect_url = reverse('restaurantDashboard')  # Assuming you have a named URL pattern for clinicDashboard
     elif user.role == 2:
         redirect_url = reverse('customerDashboard')  # Assuming you have a named URL pattern for customerDashboard
     elif user.role is None and user.is_superadmin:

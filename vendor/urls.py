@@ -5,9 +5,14 @@ from accounts import views as accounts_views
 
 urlpatterns = [
     path('', accounts_views.restaurantDashboard, name='restaurant'),
+    path('menu-builder', views.menu_builder, name='menu-builder'),
     path('profile/', views.restaurantProfile, name='restaurant-profile'),
     path('opening-hours/', views.opening_hours, name='opening-hours'),
     path('bookings/', views.bookings, name='bookings'),
+    path('menu-builder/category/<int:pk>/', views.menu_builder_category, name='menu-builder-category'),
+    path('menu-builder/category/add/', views.add_category, name='add-category'),
+    path('menu-builder/category/edit/<int:pk>/', views.edit_category, name='edit-category'),
+    path('menu-builder/category/delete/<int:pk>/', views.delete_category, name='delete-category'),
     path('view-doctor-notes/<int:appointment_id>/', views.view_doctor_notes, name='view_doctor_notes'),
     
     path('opening-hours/add/', views.add_opening_hours, name='add-opening-hour'),
