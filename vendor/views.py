@@ -147,6 +147,7 @@ def add_food(request):
             print(form.errors)
             messages.warning(request, 'Category already exists.')
     form = FoodItemForm()
+    form.fields['category'].queryset = Category.objects.filter(vendor=get_vendor(request))
     context = {
         'form': form,
     }
