@@ -185,11 +185,13 @@
       <div class="flex justify-between items-center mx-2">
         <h1 class="text-center text-2xl font-bold text-white">Menu builder</h1>
         <div>
-          <a href="#" class="text-center text-white" onclick="history.back()">Back</a>
+          <a href="#" class="text-center text-white" onclick="history.back()"
+            >Back</a
+          >
           <a href="{% url 'add-category' %}" class="text-center text-white"
             >Add category</a
           >
-          <a href="#" class="text-center text-white">Add Food</a>
+          <a href="{% url 'add-food' %}" class="text-center text-white">Add Food</a>
         </div>
       </div>
 
@@ -239,7 +241,6 @@
             <td
               class="py-4 px-6 text-sm font-medium text-right whitespace-nowrap"
             >
-            
               <a
                 href="{% url 'edit-category' category.id %}"
                 class="text-blue-600 dark:text-blue-500 hover:underline"
