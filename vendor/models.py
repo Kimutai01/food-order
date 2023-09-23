@@ -10,6 +10,7 @@ from datetime import date
 class Vendor(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     profile = models.OneToOneField(Profile, on_delete=models.CASCADE)
+    vendor_slug = models.SlugField(max_length=100, null=True, blank=True)
     vendor_name = models.CharField(max_length=100)
     vendor_license = models.ImageField(upload_to='vendor',null=True, blank=True)
     is_approved = models.BooleanField(default=False)

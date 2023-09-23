@@ -1,0 +1,87 @@
+{% extends 'main.html' %} {% load static %} {% block content %} {% include 'alerts.html' %}
+
+<h4 class="text-center uppercase">Marketplace</h4>
+<div class="flex mx-10">
+  <div
+    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 mt-10 w-full"
+  >
+    {% for vendor in vendors %}
+    <div class="relative mx-auto w-full">
+      <div
+        class="relative inline-block duration-300 ease-in-out transition-transform transform hover:-translate-y-2 w-full"
+      >
+        <div class="shadow p-4 rounded-lg bg-white">
+          <div
+            class="flex justify-center relative rounded-lg overflow-hidden h-52"
+          >
+            <div
+              class="transition-transform duration-500 transform ease-in-out hover:scale-110 w-full"
+            >
+              <div class="">
+                <img
+                  src="{{ vendor.profile.profile_picture.url }}"
+                  alt=""
+                  class="w-full h-full object-cover"
+                />
+              </div>
+            </div>
+
+            <div class="absolute flex justify-center bottom-0 mb-3"></div>
+            {% if vendor.is_open %}
+
+            <span
+              class="absolute top-0 left-0 inline-flex mt-3 ml-3 px-3 py-2 rounded-lg z-10 bg-green-500 text-sm font-medium text-white select-none"
+            >
+              Open
+            </span>
+            {% else %}
+
+            <span
+              class="absolute top-0 left-0 inline-flex mt-3 ml-3 px-3 py-2 rounded-lg z-10 bg-red-500 text-sm font-medium text-white select-none"
+            >
+              Closed
+            </span>
+
+            {% endif %}
+          </div>
+
+          <div class="mt-4">
+            <h2
+              class="font-medium text-base md:text-lg text-gray-800 line-clamp-1"
+              title="New York"
+            >
+             <a href="{% url 'vendor-detail' vendor.vendor_slug %}">
+              {{ vendor.vendor_name }}
+              </a>
+            </h2>
+            <p class="mt-2 text-sm text-gray-800">
+              {{ vendor.profile.address }}
+            </p>
+
+            <p class="mt-2 text-sm text-gray-800 line-clamp-1">
+              {{ vendor.profile.phone_number }}
+            </p>
+            <button
+              class="mt-2 text-sm text-gray-800 line-clamp-1"
+            >
+            <a href="{% url 'vendor-detail' vendor.vendor_slug %}">
+              View
+            </a>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="bg-[#F28500] h-[150px] py-3 mr-5 px-5">
+    <h2>I'm not listed</h2>
+    <p>Is your restaurant or business not listed on the site</p>
+    <div class="border-2 mt-5 border-white flex justify-center mx-16 items-center">
+      <a href="{% url 'register-vendor' %}" class="btn btn-primary">Register</a>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

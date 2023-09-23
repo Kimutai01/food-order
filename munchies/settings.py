@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'accounts',
     'vendor',
     'sweetify',
-    'menu'
+    'menu',
+    'marketplace',
 ]
 
 MIDDLEWARE = [

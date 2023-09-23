@@ -15,16 +15,29 @@
 </div>
 
 <div class="w-[90%] mx-auto mt-20">
-  <h1 class="text-center text-3xl font-bold text-blue-500 mt-20 uppercase">
-    Clinics
+  <h1 class="text-3xl font-bold text-blue-500 mt-20 uppercase">
+    Top restaurants
   </h1>
-  <p class="text-black-500 text-lg mt-5 text-center">
-    Explore the best vetinary clinics in your area
+  <p class="text-black-500 text-lg mt-5">
+    Explore restaurants,caffe and bars by locality
   </p>
+  <div
+    class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-6 mt-10 w-full"
+  >
+    {% for vendor in vendors %}
+    <div>
+      <img src="{{ vendor.profile.profile_picture.url }}" />
+    </div>
+    {% endfor %}
+  </div>
+  <h1 class="text-3xl font-bold text-blue-500 mt-20">
+    Choose from the most popular restaurants nearby
+  </h1>
+  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam</p>
   <div
     class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-10 w-full"
   >
-    {% for clinic in clinics %}
+    {% for vendor in vendors %}
     <div class="relative mx-auto w-full">
       <div
         class="relative inline-block duration-300 ease-in-out transition-transform transform hover:-translate-y-2 w-full"
@@ -38,7 +51,7 @@
             >
               <div class="">
                 <img
-                  src="{{ clinic.profile.profile_picture.url }}"
+                  src="{{ vendor.profile.profile_picture.url }}"
                   alt=""
                   class="w-full h-full object-cover"
                 />
@@ -46,7 +59,7 @@
             </div>
 
             <div class="absolute flex justify-center bottom-0 mb-3"></div>
-            {% if clinic.is_open %}
+            {% if vendor.is_open %}
 
             <span
               class="absolute top-0 left-0 inline-flex mt-3 ml-3 px-3 py-2 rounded-lg z-10 bg-green-500 text-sm font-medium text-white select-none"
@@ -69,20 +82,16 @@
               class="font-medium text-base md:text-lg text-gray-800 line-clamp-1"
               title="New York"
             >
-              {{ clinic.vendor_name }}
+              {{ vendor.vendor_name }}
             </h2>
             <p class="mt-2 text-sm text-gray-800">
-              {{ clinic.profile.address }}
+              {{ vendor.profile.address }}
             </p>
 
             <p class="mt-2 text-sm text-gray-800 line-clamp-1">
-              {{ clinic.profile.phone_number }}
+              {{ vendor.profile.phone_number }}
             </p>
-            <button class="bg-[#ff5634] text-white rounded-md px-5 py-2 mt-5">
-              <a href="{% url 'appointments_booking' clinic.id %}">
-                Book Appointment
-              </a>
-            </button>
+          
           </div>
         </div>
       </div>
