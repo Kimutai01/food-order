@@ -2,6 +2,12 @@ from django.shortcuts import render
 from vendor.models import Vendor
 from menu.models import Category, FoodItem
 from django.db.models import Prefetch
+from django.http import HttpResponse
+from django.http import JsonResponse
+from .models import Cart
+from .context_processors import get_cart_counter
+
+
 
 # Create your views here.
 
@@ -23,10 +29,46 @@ def vendor_detail(request, vendor_slug):
             queryset=FoodItem.objects.filter(is_available=True),
         )
     ) 
-    print(categories)
+    if request.user.is_authenticated:
+        cart_items = Cart.objects.filter(user=request.user)
+    else:
+        cart_items = None
     context = {
         'vendor': vendor,
         'categories': categories,
+        'cart_items': cart_items,
         
     }
     return render(request, 'marketplace/vendor_detail.html', context)
+
+def add_to_cart(request, food_id):
+    if(request.user.is_authenticated):
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            try:
+                fooditem = FoodItem.objects.get(id=food_id)
+        
+                    # Check if user has already added to the cart
+                try:
+                    cart_item = Cart.objects.get(
+                        user=request.user,
+                        fooditem=fooditem,
+                    )
+                    cart_item.quantity += 1
+                    cart_item.save()
+                    return JsonResponse({'status': 'success', 'message': 'Increased product quantity', 'cart_counter': get_cart_counter(request), 'qty': cart_item.quantity})
+                except:
+                    cart_item = Cart.objects.create(
+                        user=request.user,
+                        fooditem=fooditem,
+                        quantity=1,
+                    )
+                    cart_item.save()
+                    return JsonResponse({'status': 'success', 'message': 'Added to cart','cart_counter': get_cart_counter(request),'qty': cart_item.quantity})
+                    
+            except:
+                return JsonResponse({'status': 'failed', 'message': 'This food item does not exist'})
+                
+        else:
+            return JsonResponse({'status': 'failed', 'message': 'Invalid request'})
+    else:
+        return JsonResponse({'status': 'Failed', 'message': 'Please Log in to continue'})

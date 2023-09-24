@@ -58,21 +58,22 @@
             <img src="{{ food.image.url }}" alt="{{ food.food_title }}" class="w-16 h-16 object-cover rounded">
             <span class="font-semibold">{{ food.food_title }}</span>
             <span class="text-green-600">${{ food.price }}</span>
-            <span class="cursor-pointer bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-blue-700">+</span>
+            <div class='flex gap-5'>
+            <span class="decrease_cart cursor-pointer bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-blue-700">-</span>
+            <label id="qty-{{food.id}}" class="text-blue-500 text-lg font-semibold">0</label>
+            <span class="add_to_cart cursor-pointer bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-blue-700" data-id="{{ food.id }}" data-url="{% url 'add-to-cart' food.id %}">+</span>
+            </div>
+            
         </li>
         {% endfor %}
     </ul>
                 {% endfor %}
 
-                <div id="category2-details" class="details-container">
-                    <h1 class="text-2xl font-bold">Category 2 Details</h1>
-                    <p>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                </div>
+               {% for item in cart_items %}
 
-                <div id="category3-details" class="details-container">
-                    <h1 class="text-2xl font-bold">Category 3 Details</h1>
-                    <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                </div>
+               <span id="qty-{{item.fooditem.id}}" class="hidden item-qty text-blue-500 text-lg font-semibold" data-qty="{{item.quantity}}">{{item.quantity}}</span>
+
+               {% endfor %}
             </div>
         </div>
     </div>

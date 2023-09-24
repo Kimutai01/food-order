@@ -1,0 +1,7 @@
+{% extends 'main.html' %} {% load static %} {% block content %} {% include 'alerts.html' %}
+
+<form action="{% url 'chapter' %}" method="post">
+    {% csrf_token %}
+    <input type="submit" value="pay" />
+</form>
+{% endblock %}
