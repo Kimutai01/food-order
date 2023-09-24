@@ -59,7 +59,7 @@
             <span class="font-semibold">{{ food.food_title }}</span>
             <span class="text-green-600">${{ food.price }}</span>
             <div class='flex gap-5'>
-            <span class="decrease_cart cursor-pointer bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-blue-700">-</span>
+            <span class="decrease_cart cursor-pointer bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-blue-700" data-id="{{ food.id }}" data-url="{% url 'decrease-cart' food.id %}">-</span>
             <label id="qty-{{food.id}}" class="text-blue-500 text-lg font-semibold">0</label>
             <span class="add_to_cart cursor-pointer bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-blue-700" data-id="{{ food.id }}" data-url="{% url 'add-to-cart' food.id %}">+</span>
             </div>

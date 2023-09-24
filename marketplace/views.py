@@ -66,9 +66,39 @@ def add_to_cart(request, food_id):
                     return JsonResponse({'status': 'success', 'message': 'Added to cart','cart_counter': get_cart_counter(request),'qty': cart_item.quantity})
                     
             except:
-                return JsonResponse({'status': 'failed', 'message': 'This food item does not exist'})
+                return JsonResponse({'status': 'Failed', 'message': 'This food item does not exist'})
                 
         else:
             return JsonResponse({'status': 'failed', 'message': 'Invalid request'})
+    else:
+        return JsonResponse({'status': 'Failed', 'message': 'Please Log in to continue'})
+    
+def decrease_cart(request, food_id):
+    if(request.user.is_authenticated):
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            try:
+                fooditem = FoodItem.objects.get(id=food_id)
+        
+                    # Check if user has already added to the cart
+                try:
+                    cart_item = Cart.objects.get(
+                        user=request.user,
+                        fooditem=fooditem,
+                    )
+                    if cart_item.quantity > 1:
+                        cart_item.quantity -= 1
+                        cart_item.save()
+                        return JsonResponse({'status': 'success', 'message': 'Decreased product quantity', 'cart_counter': get_cart_counter(request), 'qty': cart_item.quantity})
+                    else:
+                        cart_item.delete()
+                        return JsonResponse({'status': 'success', 'message': 'Removed from cart', 'cart_counter': get_cart_counter(request), 'qty': 0})
+                except:
+                    return JsonResponse({'status': 'Failed', 'message': 'This food does not exist in your cart'})
+                    
+            except:
+                return JsonResponse({'status': 'Failed', 'message': 'This food item does not exist'})
+                
+        else:
+            return JsonResponse({'status': 'Failed', 'message': 'Invalid request'})
     else:
         return JsonResponse({'status': 'Failed', 'message': 'Please Log in to continue'})
