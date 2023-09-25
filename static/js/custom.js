@@ -200,4 +200,40 @@ $(document).ready(function () {
       },
     });
   });
+
+  // Delete cart item
+  $(".delete_cart").on("click", function (e) {
+    e.preventDefault();
+    let cart_id = $(this).attr("data-id");
+    let url = $(this).attr("data-url");
+
+    $.ajax({
+      type: "GET",
+      url: url,
+
+      success: function (response) {
+        if (response.status == "Failed") {
+          swal("Error!", response.message, "error");
+        } else {
+          $("#cart-counter").html(response.cart_counter.cart_count);
+          swal("Success!", response.message, "success");
+          removeCartItem(0, cart_id);
+          checkEmptyCart();
+        }
+      },
+    });
+  });
+
+  function removeCartItem(cartItemQty, cart_id) {
+    if (cartItemQty <= 0) {
+      document.getElementById("cart-item-" + cart_id).remove();
+    }
+  }
+
+  function checkEmptyCart() {
+    let cart_counter = document.getElementById("cart-counter").innerHTML;
+    if (cart_counter == 0) {
+      document.getElementById("empty_cart").style.display = "block";
+    }
+  }
 });
