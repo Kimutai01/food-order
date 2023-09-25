@@ -20,7 +20,7 @@
             <span class="font-semibold">{{ item.fooditem.food_title }}</span>
             <span class="text-green-600">${{ item.fooditem.price }}</span>
             <div class='flex gap-5'>
-            <span class="decrease_cart cursor-pointer bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-blue-700" data-id="{{ item.fooditem.id }}" data-url="{% url 'decrease-cart' item.fooditem.id %}">-</span>
+            <span class="decrease_cart cursor-pointer bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-blue-700" data-id="{{ item.fooditem.id }}" id="{{item.id}}" data-url="{% url 'decrease-cart' item.fooditem.id %}">-</span>
             <label id="qty-{{item.fooditem.id}}" class="text-blue-500 text-lg font-semibold">0</label>
             <span class="add_to_cart cursor-pointer bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-blue-700" data-id="{{ item.fooditem.id }}" data-url="{% url 'add-to-cart' item.fooditem.id %}">+</span>
             <span class="delete_cart cursor-pointer bg-red-500 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-blue-700" data-id="{{ item.id }}" data-url="{% url 'delete-cart' item.id %}">

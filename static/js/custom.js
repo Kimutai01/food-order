@@ -180,6 +180,7 @@ $(document).ready(function () {
   $(".decrease_cart").on("click", function (e) {
     e.preventDefault();
     let food_id = $(this).attr("data-id");
+    let cart_id = $(this).attr("id");
     let url = $(this).attr("data-url");
     let data = {
       food_id: food_id,
@@ -196,6 +197,9 @@ $(document).ready(function () {
 
           $("#cart-counter").html(response.cart_counter.cart_count);
           $("#qty-" + food_id).html(response.qty);
+
+          removeCartItem(response.qty, cart_id);
+          checkEmptyCart();
         }
       },
     });
@@ -225,15 +229,19 @@ $(document).ready(function () {
   });
 
   function removeCartItem(cartItemQty, cart_id) {
-    if (cartItemQty <= 0) {
-      document.getElementById("cart-item-" + cart_id).remove();
+    if (window.location.pathname == "/cart/") {
+      if (cartItemQty <= 0) {
+        document.getElementById("cart-item-" + cart_id).remove();
+      }
     }
   }
 
   function checkEmptyCart() {
     let cart_counter = document.getElementById("cart-counter").innerHTML;
-    if (cart_counter == 0) {
-      document.getElementById("empty_cart").style.display = "block";
+    if (window.location.pathname == "/cart/") {
+      if (cart_counter == 0) {
+        document.getElementById("empty_cart").style.display = "block";
+      }
     }
   }
 });
