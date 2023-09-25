@@ -34,13 +34,18 @@
         
 
         {% if user.is_authenticated %}
-        <li class="ml-10 relative">
+        <li class="ml-10 ">
+          <a
+            class="relative font-medium text-[#eee] uppercase text-sm hover:text-[#cda873] hover:scale-105 transition-colors duration-300"
+            href="{% url 'cart' %}"
+          >
           <i class="fa fa-shopping-cart text-white text-2xl"></i>
           <div
             class="bg-red-500 text-white rounded-full w-5 h-5 text-center absolute -top-2 -right-2"
           >
             <span id="cart-counter">{{cart_count}}</span>
           </div>
+          </a>
         </li>
         <li
           class="ml-10 font-medium text-[#eee] uppercase text-sm hover:text-[#cda873] hover:scale-105 transition-all duration-all hover:border-y-black"

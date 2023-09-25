@@ -158,9 +158,12 @@ $(document).ready(function () {
       success: function (response) {
         if (response.status == "Failed") {
           swal("Error!", response.message, "error");
+        } else if (response.status == "login_required") {
+          swal("Error!", response.message, "error").then(function () {
+            window.location.href = "/accounts/login";
+          });
         } else {
-          console.log(response);
-          console.log(response.cart_counter.cart_count);
+          swal("Success!", response.message, "success");
           $("#cart-counter").html(response.cart_counter.cart_count);
           $("#qty-" + food_id).html(response.qty);
         }
@@ -189,7 +192,7 @@ $(document).ready(function () {
         if (response.status == "Failed") {
           swal("Error!", response.message, "error");
         } else {
-          console.log(response);
+          swal("Success!", response.message, "success");
 
           $("#cart-counter").html(response.cart_counter.cart_count);
           $("#qty-" + food_id).html(response.qty);
