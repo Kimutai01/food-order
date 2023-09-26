@@ -17,7 +17,10 @@
         {% for item in cart_items %}
         <li id='cart-item-{{item.id}}' class="flex justify-between items-center">
             <img src="{{ item.fooditem.image.url }}" alt="{{ item.fooditem.food_title }}" class="w-16 h-16 object-cover rounded">
+            <div class="flex flex-col">
             <span class="font-semibold">{{ item.fooditem.food_title }}</span>
+            <a href="{% url 'vendor-detail' item.fooditem.vendor.vendor_slug %}" class="text-yellow-500 text-sm font-semibold">{{item.fooditem.vendor}}</a>
+            </div>
             <span class="text-green-600">${{ item.fooditem.price }}</span>
             <div class='flex gap-5'>
             <span class="decrease_cart cursor-pointer bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-blue-700" data-id="{{ item.fooditem.id }}" id="{{item.id}}" data-url="{% url 'decrease-cart' item.fooditem.id %}">-</span>
@@ -54,25 +57,26 @@
         <h5><b>Summary</b></h5>
         <hr class="my-5">
         <div class="flex justify-between">
-            <div class="w-1/2">ITEMS 3</div>
-            <div class="w-1/2 text-right">&euro; 132.00</div>
+            <div class="w-1/2">Subtotal</div>
+            <span class="w-1/2 text-right" id='subtotal'>{{subtotal}}</span>
         </div>
-        <form>
+        {% comment %} <form>
             <p>SHIPPING</p>
             <select class="text-gray-500 bg-gray-200 w-full py-2 px-4 mb-9 outline-none">
                 <option>Standard-Delivery- &euro;5.00</option>
             </select>
             <p>GIVE CODE</p>
             <input id="code" class="bg-gray-200 w-full py-2 px-4 mb-9 outline-none" placeholder="Enter your code">
-        </form>
-        <div class="flex justify-between border-t border-gray-200 py-5">
-            <div class="w-1/2">TOTAL PRICE</div>
-            <div class="w-1/2 text-right">&euro; 137.00</div>
-        </div>
+        </form> {% endcomment %}
         <div class="flex justify-between border-t border-gray-200 py-5">
             <div class="w-1/2">Tax</div>
-            <div class="w-1/2 text-right">&euro; 137.00</div>
+            <span class="w-1/2 text-right" id='tax'>{{tax}}</span>
         </div>
+        <div class="flex justify-between border-t border-gray-200 py-5">
+            <div class="w-1/2">TOTAL PRICE</div>
+            <span class="w-1/2 text-right" id='grand_total'>{{grand_total}}</span>
+        </div>
+        
         <button class="btn bg-black border-black text-white w-full mt-9">CHECKOUT</button>
     </div>
 </div>
