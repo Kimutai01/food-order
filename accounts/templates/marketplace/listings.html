@@ -61,6 +61,12 @@
             <p class="mt-2 text-sm text-gray-800 line-clamp-1">
               {{ vendor.profile.phone_number }}
             </p>
+
+            {% if source_location %}
+            <p class="mt-2 text-sm text-gray-800 line-clamp-1">
+              {{ vendor.kms }} km away from {{source_location}}
+            </p>
+            {% endif %}
             <button
               class="mt-2 text-sm text-gray-800 line-clamp-1"
             >

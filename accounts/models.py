@@ -3,6 +3,8 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from twilio.rest import Client
 
+from django.contrib.gis.db import models as gis_models
+from django.contrib.gis.geos import Point
 
 # Create your models here.
 
@@ -99,11 +101,18 @@ class Profile(models.Model):
     postal_code = models.CharField(max_length=10, null=True, blank=True)
     longitude = models.CharField(max_length=50, null=True, blank=True)
     latitude = models.CharField(max_length=50, null=True, blank=True)
+    location = gis_models.PointField(srid=4326, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
         return self.user.email
+    
+    def save(self, *args, **kwargs):
+        if(self.longitude and self.latitude):
+            self.location = Point(float(self.longitude), float(self.latitude))
+            return super(Profile, self).save(*args, **kwargs)
+        return super(Profile, self).save(*args, **kwargs)
     
     
     # def full_address(self):

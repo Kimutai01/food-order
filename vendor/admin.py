@@ -14,5 +14,5 @@ class OpeningHourAdmin(admin.ModelAdmin):
 
 admin.site.register(Vendor, VendorAdmin)
 admin.site.register(OpeningHour, OpeningHourAdmin)
-admin.site.register(Appointment)
-admin.site.register(DoctorNote)
+# admin.site.register(Appointment)
+# admin.site.register(DoctorNote)

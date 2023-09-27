@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'sweetify',
     'menu',
     'marketplace',
+    'django.contrib.gis',
 ]
 
 MIDDLEWARE = [
@@ -97,7 +98,8 @@ WSGI_APPLICATION = 'munchies.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': config("DB_NAME"),
         'USER' : config("DB_USER"),
         'PASSWORD' : config("DB_PASSWORD"),
