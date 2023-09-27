@@ -1,6 +1,6 @@
 {% extends 'main.html' %} {% load static %} {% block content %}
 <div class="hero-bg">
-  <div class="md:w-[50%] w-[80%]">
+  <div class="md:w-[80%] w-[80%]">
     <h2 class="text-center text-2xl text-[#ff5634]">
       Find Restaurants around you
     </h2>
@@ -11,6 +11,85 @@
       quos doloribus quod quas? Quisquam voluptatibus, voluptatem, quibusdam,
       quia voluptates voluptatum voluptate quos doloribus quod quas?
     </p>
+    <div class="">
+      <div class="main-search bg-holder">
+        <form action="{% url 'search' %}" method="GET">
+          <div class="grid grid-cols-12 gap-4">
+            <div class="col-span-2 sm:col-span-4">
+              <div class="field-holder">
+                <input
+                  type="text"
+                  name="keyword"
+                  placeholder="Restaurant name or food name"
+                  class="w-full px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring focus:ring-blue-400"
+                />
+              </div>
+            </div>
+            <div class="col-span-5 sm:col-span-4">
+              <div class="field-holder">
+                <ul>
+                  <li class="select-location">
+                    <div
+                      class="foodbakery-locations-fields-group foodbakery-focus-out"
+                    >
+                      <span class="foodbakery-search-location-icon"
+                        ><i class="icon-location"></i
+                      ></span>
+                      <input
+                        type="text"
+                        name="address"
+                        class="location-field-text filter w-full px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring focus:ring-blue-400"
+                        id="id_address"
+                        required
+                        placeholder="All Locations"
+                      />
+                      <input
+                        type="hidden"
+                        name="lat"
+                        value=""
+                        id="id_latitude"
+                      />
+                      <input
+                        type="hidden"
+                        name="lng"
+                        value=""
+                        id="id_longitude"
+                      />
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-span-2">
+              <select
+                name="radius"
+                id="radius"
+                class="h-12 w-full px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring focus:ring-blue-400"
+                required
+              >
+                <option value="" selected>Choose Radius</option>
+                <option value="5">5km</option>
+                <option value="10">10km</option>
+                <option value="15">15km</option>
+                <option value="25">25km</option>
+                <option value="50">50km</option>
+                <option value="75">75km</option>
+                <option value="100">100km</option>
+              </select>
+            </div>
+            <div class="col-span-2">
+              <div class="field-holder">
+                <input
+                  type="submit"
+                  value="Search"
+                  class="w-full px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 cursor-pointer"
+                />
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -91,7 +170,6 @@
             <p class="mt-2 text-sm text-gray-800 line-clamp-1">
               {{ vendor.profile.phone_number }}
             </p>
-          
           </div>
         </div>
       </div>
