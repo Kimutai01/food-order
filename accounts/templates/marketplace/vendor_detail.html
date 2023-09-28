@@ -3,7 +3,7 @@
 <div class="vendor-detail flex justify-between items-center px-20">
   <div class="">
     <div>
-      <h2 class="text-white">{{ vendor.vendor_name }}</h2>
+      <h2 class="text-white">{{ vendor.vendor_name }} {% if not is_open %} <span class="text-red-500">[Closed]</span> {% endif %}</h2>
       <p class="text-white">{{ vendor.profile.address }}</p>
     </div>
   </div>
