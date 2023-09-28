@@ -104,9 +104,9 @@
     class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-6 mt-10 w-full"
   >
     {% for vendor in vendors %}
-    <div>
-      <img src="{{ vendor.profile.profile_picture.url }}" />
-    </div>
+    <a href="{% url 'vendor-detail' vendor.vendor_slug %}">
+      <img src="{{ vendor.profile.profile_picture.url }}" class="h-40 w-40" />
+    </a>
     {% endfor %}
   </div>
   <h1 class="text-3xl font-bold text-blue-500 mt-20">
@@ -118,8 +118,9 @@
   >
     {% for vendor in vendors %}
     <div class="relative mx-auto w-full">
-      <div
+      <a
         class="relative inline-block duration-300 ease-in-out transition-transform transform hover:-translate-y-2 w-full"
+        href="{% url 'vendor-detail' vendor.vendor_slug %}"
       >
         <div class="shadow p-4 rounded-lg bg-white">
           <div
@@ -167,12 +168,14 @@
               {{ vendor.profile.address }}
             </p>
 
+            {% if vendor.kms %}
             <p class="mt-2 text-sm text-gray-800 line-clamp-1">
-              {{ vendor.profile.phone_number }}
+              {{ vendor.kms }} kms from you
             </p>
+            {% endif %}
           </div>
         </div>
-      </div>
+      </a>
     </div>
     {% endfor %}
   </div>

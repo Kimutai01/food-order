@@ -182,5 +182,5 @@ EMAIL_USE_TLS = config("EMAIL_USE_TLS", cast=bool)
 EMAIL_USE_SSL = config("EMAIL_USE_SSL", cast=bool)
 DEFAULT_FROM_EMAIL = 'vetinary services around you <kiprotichkimutai01@gmail.com>'
 
-GOOGLE_API_KEY = 'AIzaSyCofEHIsoFbtmxqUvDMQgbHTRIfJ1yrARI'
+GOOGLE_API_KEY = 'AIzaSyAixNAuiD6Kn7rYUhoa221lcWNPEQaUw04'
 
