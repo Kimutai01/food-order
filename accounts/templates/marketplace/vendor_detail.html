@@ -7,29 +7,33 @@
       <p class="text-white">{{ vendor.profile.address }}</p>
     </div>
   </div>
+  {% if opening_hours %}
   <div class="max-w-xs mt-10">
     <div class="relative group">
       <!-- Default content -->
+      {% for i in current_opening_hours %}
       <div class="bg-blue-500 text-white px-4 py-2 cursor-pointer">
-        Today: 11:00 am - 11:00 pm
+        <strong>Today:</strong>{% if i.is_closed %} Closed {% else %} {{i.from_hour}} - {{i.to_hour}}{% endif %}
       </div>
-
+      {% endfor %}
       <!-- Dropdown content -->
+      
       <div
         class="dropdown-content hidden group-hover:block bg-white border rounded-lg mt-2 absolute w-72 z-10"
       >
         <div class="p-2">
-          <p><strong>Monday:</strong> 11:00 am - 11:00 pm</p>
-          <p><strong>Tuesday:</strong> 11:00 am - 11:00 pm</p>
-          <p><strong>Wednesday:</strong> 11:00 am - 11:00 pm</p>
-          <p><strong>Thursday:</strong> 11:00 am - 11:00 pm</p>
-          <p><strong>Friday:</strong> 11:00 am - 11:00 pm</p>
-          <p><strong>Saturday:</strong> 11:00 am - 11:00 pm</p>
-          <p><strong>Sunday:</strong> Closed</p>
+          {% for hour in opening_hours %}
+          <p><strong>{{hour}}:</strong>{% if hour.is_closed %} Closed {% else %} {{hour.from_hour}} - {{hour.to_hour}}{% endif %}</p>
+
+          {% endfor %}
+         
+     
         </div>
       </div>
+      
     </div>
   </div>
+  {% endif %}
 </div>
 
 <div class="container mx-auto p-8">

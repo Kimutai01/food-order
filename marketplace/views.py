@@ -12,6 +12,8 @@ from django.contrib.gis.geos import GEOSGeometry
 from django.contrib.gis.db.models.functions import Distance
 from django.contrib.gis.measure import D
 from django.shortcuts import redirect
+from vendor.models import OpeningHour
+from datetime import date
 
 
 
@@ -35,6 +37,11 @@ def vendor_detail(request, vendor_slug):
             queryset=FoodItem.objects.filter(is_available=True),
         )
     ) 
+    
+    opening_hours = OpeningHour.objects.filter(vendor=vendor).order_by('day','-from_hour')
+    
+    current_opening_hours = OpeningHour.objects.filter(vendor=vendor, day=date.today().isoweekday())
+    
     if request.user.is_authenticated:
         cart_items = Cart.objects.filter(user=request.user)
     else:
@@ -43,6 +50,8 @@ def vendor_detail(request, vendor_slug):
         'vendor': vendor,
         'categories': categories,
         'cart_items': cart_items,
+        'opening_hours': opening_hours,
+        'current_opening_hours': current_opening_hours,
         
     }
     return render(request, 'marketplace/vendor_detail.html', context)
