@@ -68,16 +68,24 @@
             <p>GIVE CODE</p>
             <input id="code" class="bg-gray-200 w-full py-2 px-4 mb-9 outline-none" placeholder="Enter your code">
         </form> {% endcomment %}
+
+        {% for key,value in tax_dict.items %}
+        {% for i,j in value.items %}
         <div class="flex justify-between border-t border-gray-200 py-5">
-            <div class="w-1/2">Tax</div>
-            <span class="w-1/2 text-right" id='tax'>{{tax}}</span>
+            <div>
+            {{key}}(<small>{{i}}%</small>)
+            </div>
+           
+            <span class="w-1/2 text-right" id="tax-{{key}}">{{j}}</span>
         </div>
+        {% endfor %}
+        {% endfor %}
         <div class="flex justify-between border-t border-gray-200 py-5">
             <div class="w-1/2">TOTAL PRICE</div>
             <span class="w-1/2 text-right" id='grand_total'>{{grand_total}}</span>
         </div>
         
-        <button class="btn bg-black border-black text-white w-full mt-9">CHECKOUT</button>
+        <button class="btn bg-black border-black text-white w-full mt-9" ">CHECKOUT</button>
     </div>
 </div>
 
