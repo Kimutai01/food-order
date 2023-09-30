@@ -15,6 +15,8 @@ from django.shortcuts import redirect
 from vendor.models import OpeningHour
 from datetime import date
 from datetime import datetime
+from orders.forms import OrderForm
+from accounts.models import Profile
 
 
 
@@ -181,6 +183,37 @@ def search(request):
         }
         
     return render(request, 'marketplace/listings.html', context)
+
+def checkout(request):
+    cart_items = Cart.objects.filter(user=request.user).order_by('-created_at')
+    profile = Profile.objects.get(user=request.user)
+    default_values={
+        'first_name': request.user.first_name,
+        'last_name': request.user.last_name,
+        'email': request.user.email,
+        'phone': request.user.phone_number,
+        'address': profile.address,
+        'country': profile.country,
+        'county': profile.county,
+        'city': profile.city,
+    }
+    form = OrderForm(initial=default_values)
+    
+    cart_count = cart_items.count()
+    if cart_count <= 0:
+        return redirect('marketplace')
+    # if request.method == 'POST':
+    #     form = OrderForm(request.POST, initial=default_values)
+    #     if form.is_valid():
+    #         order = form.save(commit=False)
+    #         order.user = request.user
+    #         order.save()
+    #         return redirect('home')
+    context = {
+        'form': form,
+        'cart_items': cart_items,
+    }
+    return render(request, 'marketplace/checkout.html', context)
         
         
 

@@ -1,0 +1,149 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block content %}
+{% include 'alerts.html' %}
+
+<div class="bg-gray-300 flex font-sans text-sm font-bold">
+    <div class="w-[70%] p-4 bg-white rounded-l-lg shadow-lg">
+        <div class="title mb-20">
+            <h4 class="text-2xl"><b>Billing address</b></h4>
+            <div class="flex justify-between items-center text-right text-gray-500">3 items</div>
+        </div>
+        <div class="min-h-screen p-6 bg-gray-100 flex items-center justify-center">
+            <div class="container max-w-screen-lg mx-auto">
+                <div>
+                    <h2 class="font-semibold text-xl text-gray-600">Responsive Form</h2>
+                    <p class="text-gray-500 mb-6">Form is mobile responsive. Give it a try.</p>
+
+                    <div class="bg-white rounded shadow-lg p-4 px-4 md:p-8 mb-6">
+                        <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 lg:grid-cols-3">
+                            <div class="text-gray-600">
+                                <p class="font-medium text-lg">Personal Details</p>
+                                <p>Please fill out all the fields.</p>
+                            </div>
+
+                            <div class="lg:col-span-2">
+                                <form class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-5"
+                                    method="POST" action="{% url 'checkout' %}">
+                                    {% csrf_token %}
+
+                                    <div class="md:col-span-2">
+                                        <label for="{{form.first_name.id_for_label}}">First Name</label>
+                                        {{form.first_name}}
+                                    </div>
+
+                                    <div class="md:col-span-2">
+                                        <label for="{{form.last_name.id_for_label}}">Last Name</label>
+                                        {{form.last_name}}
+                                    </div>
+
+                                    <div class="md:col-span-5">
+                                        <label for="{{form.email.id_for_label}}">Email</label>
+                                        {{form.email}}
+                                    </div>
+
+                                    <div class="md:col-span-3">
+                                        <label for="{{form.phone.id_for_label}}">Phone</label>
+                                        {{form.phone}}
+                                    </div>
+
+                                    <div class="md:col-span-2">
+                                        <label for="{{form.address.id_for_label}}">Address</label>
+                                        {{form.address}}
+                                    </div>
+
+                                    <div class="md:col-span-2">
+                                        <label for="{{form.country.id_for_label}}">Country</label>
+                                        {{form.country}}
+                                    </div>
+
+                                    <div class="md:col-span-2">
+                                        <label for="{{form.county.id_for_label}}">County</label>
+                                        {{form.county}}
+                                    </div>
+
+                                    <div class="md:col-span-1">
+                                        <label for="{{form.city.id_for_label}}">City</label>
+                                        {{form.city}}
+                                    </div>
+
+                                    <div class="md:col-span-5">
+                                        <div class="inline-flex items-center">
+                                            <input type="checkbox" name="billing_same" id="billing_same"
+                                                class="form-checkbox" />
+                                            <label for="billing_same" class="ml-2">My billing address is different
+                                                than above.</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="">
+                                        <button type="submit"
+                                            class="p-2  bg-black border-black text-white w-full mt-9">CHECKOUT</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <a href="https://www.buymeacoffee.com/dgauderman" target="_blank"
+                    class="md:absolute bottom-0 right-0 p-4 float-right">
+                    <img src="https://www.buymeacoffee.com/assets/img/guidelines/logo-mark-3.svg"
+                        alt="Buy Me A Coffee"
+                        class="transition-all rounded-full w-14 -rotate-45 hover:shadow-sm shadow-lg ring hover:ring-4 ring-white">
+                </a>
+            </div>
+        </div>
+
+        <div class="back-to-shop mt-36">
+            <a href="#">&leftarrow;</a><span class="text-gray-500">Back to shop</span>
+        </div>
+    </div>
+
+    <div class="bg-gray-300 rounded-r-lg p-4 text-gray-500">
+        {% if cart_items %}
+        {% for item in cart_items %}
+        <li id='cart-item-{{item.id}}' class="flex justify-between items-center">
+            <img src="{{ item.fooditem.image.url }}" alt="{{ item.fooditem.food_title }}"
+                class="w-16 h-16 object-cover rounded">
+            <div class="flex flex-col">
+                <span class="font-semibold">{{ item.fooditem.food_title }}</span>
+                <a href="{% url 'vendor-detail' item.fooditem.vendor.vendor_slug %}"
+                    class="text-yellow-500 text-sm font-semibold">{{item.fooditem.vendor}}</a>
+            </div>
+            <div class="quantity">
+                <span class="text-gray-400">Qty: {{ item.quantity }}</span>
+            </div>
+            <span class="text-green-600">${{ item.fooditem.price }}</span>
+            <div class='flex gap-5'>
+            </div>
+        </li>
+        {% endfor %}
+        {% endif %}
+        <h5><b>Summary</b></h5>
+        <hr class="my-5">
+        <div class="flex justify-between">
+            <div class="w-1/2">Subtotal</div>
+            <span class="w-1/2 text-right" id='subtotal'>{{subtotal}}</span>
+        </div>
+
+        {% for key,value in tax_dict.items %}
+        {% for i,j in value.items %}
+        <div class="flex justify-between border-t border-gray-200 py-5 w-full">
+            <div>
+                {{key}}(<small>{{i}}%</small>)
+            </div>
+            <span class="w-1/2 text-right" id="tax-{{key}}">{{j}}</span>
+        </div>
+        {% endfor %}
+        {% endfor %}
+        <div class="flex justify-between border-t border-gray-200 py-5">
+            <div class="w-1/2">TOTAL PRICE</div>
+            <span class="w-1/2 text-right" id='grand_total'>{{grand_total}}</span>
+        </div>
+        <a href={% url 'checkout' %} class="p-3 bg-black border-black text-white w-full mt-9">
+            Proceed to checkout
+        </a>
+    </div>
+</div>
+{% endblock %}
