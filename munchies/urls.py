@@ -33,6 +33,7 @@ urlpatterns = [
     
     path('search/', marketplace_views.search, name='search'),
     path('checkout/', marketplace_views.checkout, name='checkout'),
+    path('orders/', include('orders.urls')),
     
 ]
 

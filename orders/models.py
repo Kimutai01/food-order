@@ -23,16 +23,17 @@ class Payment(models.Model):
 
 class Order(models.Model):
     STATUS = (
-        ('New', 'New'),
-        ('Accepted', 'Accepted'),
-        ('Completed', 'Completed'),
+        ('Success', 'Success'),
+        ('Pending', 'Pending'),
+        ('Failed', 'Failed'),
         ('Cancelled', 'Cancelled'),
+        ('Refunded', 'Refunded'),
     )
 
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     payment = models.ForeignKey(Payment, on_delete=models.SET_NULL, blank=True, null=True)
     vendors = models.ManyToManyField(Vendor, blank=True)
-    order_number = models.CharField(max_length=20)
+    order_number = models.CharField(max_length=100)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     phone = models.CharField(max_length=15, blank=True)

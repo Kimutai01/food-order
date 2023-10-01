@@ -1,0 +1,289 @@
+{% extends 'main.html' %} {% load static %} {% block content %} {% include
+'alerts.html' %}
+
+<div class="bg-gray-300 flex font-sans text-sm font-bold">
+  <div class="w-[70%] p-4 bg-white rounded-l-lg shadow-lg">
+    <div class="title mb-20">
+      <h4 class="text-2xl"><b>Review your billing address</b></h4>
+      <p class="text-gray-500">Please review your billing address below.</p>
+      <p class="text-gray-500">Order:{{order.name}}</p>
+      <hr class="my-5" />
+      <p class="text-gray-500">Email:{{order.email}}</p>
+      <hr class="my-5" />
+      <p class="text-gray-500">Phone:{{order.phone}}</p>
+      <hr class="my-5" />
+      <p class="text-gray-500">City:{{order.city}}</p>
+      <hr class="my-5" />
+      <p class="text-gray-500">County:{{order.county}}</p>
+      <hr class="my-5" />
+      <p class="text-gray-500">Country:{{order.country}}</p>
+      <hr class="my-5" />
+      <p class="text-gray-500">Country:{{order.payment_method}}</p>
+      <a href="{% url 'checkout' %}" class="text-blue-500">Edit</a>
+    </div>
+  </div>
+  <div class="summary bg-gray-300 rounded-r-lg p-4 text-gray-500">
+    <h5><b>Summary</b></h5>
+    <hr class="my-5" />
+    <div class="flex justify-between">
+      <div class="w-1/2">Subtotal</div>
+      <span class="w-1/2 text-right" id="subtotal">{{subtotal}}</span>
+    </div>
+
+    {% for key,value in tax_dict.items %} {% for i,j in value.items %}
+    <div class="flex justify-between border-t border-gray-200 py-5">
+      <div>{{key}}(<small>{{i}}%</small>)</div>
+      <span class="w-1/2 text-right" id="tax-{{key}}">{{j}}</span>
+    </div>
+    {% endfor %} {% endfor %}
+    <div class="flex justify-between border-t border-gray-200 py-5">
+      <div class="w-1/2">TOTAL PRICE</div>
+      <span class="w-1/2 text-right" id="grand_total">{{grand_total}}</span>
+    </div>
+    <button
+      type="button"
+      id="payButton"
+      class="w-full text-center"
+      onclick="triggerPayment()"
+    >
+      Pay now
+    </button>
+    <button
+      type="button"
+      id="confirmPaymentButton"
+      class="w-full text-center"
+      style="display: none"
+      onclick="checkPayment()"
+    >
+      Confirm Payment
+    </button>
+  </div>
+</div>
+
+<script>
+    {% comment %} function triggerPayment() {
+      fetch("https://api.chpter.co/v1/initiate/mpesa-payment", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Api-Key":
+            "pk_0b51e48bc6ac135ce3f65b1355248cae71ef085c0223bc0273535a4e174dce07",
+        },
+        body: JSON.stringify({
+          customer_details: {
+            full_name: "{{ order.name }}",
+            location: "{{ order.city }}",
+            phone_number: "{{ order.phone }}",
+            email: "{{ order.email }}",
+          },
+          products: [
+            {
+              product_name: "HoodEez",
+              quantity: 1,
+              unit_price: 1,
+              digital_link: "https://example.com/link",
+            },
+          ],
+          amount: {
+            currency: "KES",
+            delivery_fee: 0.0,
+            discount_fee: 0.0,
+            total: 1.0,
+          },
+          callback_details: {
+            notify_customer: true,
+            transaction_reference: "{{ order.order_number }}",
+            callback_url: "https://mwamba-rugby-backend-435172f85359.herokuapp.com/mpesas",
+          },
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          if (data.status === 200) {
+            console.log("Payment initiated successfully");
+            document.getElementById("payButton").style.display = "none";
+          document.getElementById("confirmPaymentButton").style.display = "block";
+            swal(data.message, "success");
+          } else {
+            console.log("Payment initiation failed");
+            swal("Enter your number correctly 254700000000", "error");
+          }
+        });
+    }
+
+    function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+          const cookies = document.cookie.split(';');
+          for (let i = 0; i < cookies.length; i++) {
+              const cookie = cookies[i].trim();
+              // Does this cookie string begin with the name we want?
+              if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                  break;
+                  }
+              }
+          }
+          return cookieValue;
+      }
+      const csrftoken = getCookie('csrftoken');
+
+  function checkPayment() {
+    fetch("https://mwamba-rugby-backend-435172f85359.herokuapp.com/mpesas")
+      .then((res) => res.json())
+      .then((data) => {
+        let orderFound = false;
+        data.forEach((element) => {
+          if (element.transaction_reference === "{{ order.order_number }}") {
+            console.log("Payment confirmed");
+            swal(element.Message, "success");
+            document.getElementById("payButton").style.display = "none";
+            document.getElementById("confirmPaymentButton").style.display = "none";
+            orderFound = true;
+            sendTransaction('transaction_id': element.transaction_code, payment_method: 'Mpesa', 'status': 'Paid')
+          }
+        });
+
+
+        if (!orderFound) {
+          setTimeout(checkPayment, 5000);
+        }
+      });
+  }
+
+  function sendTransaction(transaction_id, payment_method, status) {
+    $.ajax({
+      type: "POST",
+      url: "{% url 'payments' %}",
+      data:{
+        'order_number': '{{ order.order_number }}',
+        'transaction_id': transaction_id,
+        'payment_method': payment_method,
+        'status': status,
+        'csrfmiddlewaretoken': csrftoken,
+      },
+      success: function(response){
+        console.log(response)
+      },
+      error: function(response){
+        console.log(response)
+
+      }
+
+    })
+  }  {% endcomment %}
+
+  function triggerPayment(){
+    fetch("https://api.chpter.co/v1/initiate/mpesa-payment", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Api-Key":
+            "pk_0b51e48bc6ac135ce3f65b1355248cae71ef085c0223bc0273535a4e174dce07",
+        },
+        body: JSON.stringify({
+          customer_details: {
+            full_name: "{{ order.name }}",
+            location: "{{ order.city }}",
+            phone_number: "{{ order.phone }}",
+            email: "{{ order.email }}",
+          },
+          products: [
+            {
+              product_name: "HoodEez",
+              quantity: 1,
+              unit_price: 1,
+              digital_link: "https://example.com/link",
+            },
+          ],
+          amount: {
+            currency: "KES",
+            delivery_fee: 0.0,
+            discount_fee: 0.0,
+            total: 1.0,
+          },
+          callback_details: {
+            notify_customer: true,
+            transaction_reference: "{{ order.order_number }}",
+            callback_url: "https://mwamba-rugby-backend-435172f85359.herokuapp.com/mpesas",
+          },
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          if (data.status === 200) {
+            console.log("Payment initiated successfully");
+            document.getElementById("payButton").style.display = "none";
+          document.getElementById("confirmPaymentButton").style.display = "block";
+            swal(data.message, "success");
+          } else {
+            console.log("Payment initiation failed");
+            swal("Enter your number correctly 254700000000", "error");
+          }
+        });
+  }
+
+   function checkPayment() {
+    fetch("https://mwamba-rugby-backend-435172f85359.herokuapp.com/mpesas")
+      .then((res) => res.json())
+      .then((data) => {
+        let orderFound = false;
+        data.forEach((element) => {
+          if (element.transaction_reference === "{{ order.order_number }}") {
+            console.log(element);
+            console.log("Payment confirmed");
+            swal(element.Message, "success");
+            document.getElementById("payButton").style.display = "none";
+            document.getElementById("confirmPaymentButton").style.display = "none";
+            orderFound = true;
+            payment_method = "{{ order.payment_method }}"
+            transaction_id = "{{ order.order_number }}" + String(Math.floor(Math.random() * 100))
+
+            sendTransaction(transaction_id,payment_method, element.Message)
+          }
+        });
+
+
+        if (!orderFound) {
+          setTimeout(checkPayment, 5000);
+        }
+      });
+  }
+  function sendTransaction(transaction_id, payment_method, status) {
+    function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+          const cookies = document.cookie.split(';');
+          for (let i = 0; i < cookies.length; i++) {
+              const cookie = cookies[i].trim();
+              // Does this cookie string begin with the name we want?
+              if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                  break;
+                  }
+              }
+          }
+          return cookieValue;
+      }
+      const csrftoken = getCookie('csrftoken');
+    $.ajax({
+      type: "POST",
+      url: "{% url 'payments' %}",
+      data:{
+        'order_number': '{{ order.order_number }}',
+        'transaction_id': transaction_id,
+        'payment_method': payment_method,
+        'status': status,
+        'csrfmiddlewaretoken': csrftoken,
+      },
+      success: function(response){
+        console.log(response)
+      },
+
+    })
+  }
+</script>
+
+{% endblock %}

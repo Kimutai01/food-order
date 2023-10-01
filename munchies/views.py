@@ -56,22 +56,48 @@ def home(request):
 
 def chapter(request):
     if request.method == 'POST':
-        name = request.POST['name']
-        email = request.POST['email']
-        print(name)
-        print(email)
         headers = {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer your_token_here'
+            "Content-Type": "application/json",
+            "Api-Key": "pk_0b51e48bc6ac135ce3f65b1355248cae71ef085c0223bc0273535a4e174dce07",
         }
 
-
         payload = {
-        'name': 'John Doe',
-        'email': 'johndoe@example.com'
+            "customer_details": {
+                "full_name": "Albert Chela",
+                "location": "Nairobi",
+                "phone_number": "254790841979",
+                "email": "alber@chpter.co",
+            },
+            "products": [
+                {
+                    "product_name": "HoodEez",
+                    "quantity": 1,
+                    "unit_price": 1,
+                    "digital_link": "https://example.com/link",
+                }
+            ],
+            "amount": {
+                "currency": "KES",
+                "delivery_fee": 0.00,
+                "discount_fee": 0.00,
+                "total": 1.00,
+            },
+            "callback_details": {
+                "notify_customer": True,
+                "transaction_reference": "1234",
+                "callback_url": "https://thekultureke.com/api/mpesa_transactions",
+            },
         }
 
         json_payload = json.dumps(payload)
-        url = 'https://api.example.com/endpoint'
+        url = 'https://api.chpter.co/v1/initiate/mpesa-payment'
         response = requests.post(url, headers=headers, data=json_payload)
+
+        # Now you can handle the response from the API as needed.
+        if response.status_code == 200:
+            print("Request successful")
+            print("Response:", response.json())
+        else:
+            print("Request failed with status code:", response.status_code)
+            print("Response:", response.text)
     return render(request, 'chapter.html')

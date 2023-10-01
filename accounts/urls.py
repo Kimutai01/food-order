@@ -19,4 +19,6 @@ urlpatterns = [
     path('restaurant/', include('vendor.urls')),
     path('profile/edit_customer/', views.edit_customer_profile, name='edit_customer'),
     
+    path('customers/', include('customers.urls')),
+    
 ]

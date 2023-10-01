@@ -197,6 +197,7 @@ def checkout(request):
         'county': profile.county,
         'city': profile.city,
     }
+    print(default_values)
     form = OrderForm(initial=default_values)
     
     cart_count = cart_items.count()

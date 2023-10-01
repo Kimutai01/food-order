@@ -228,6 +228,8 @@ def edit_customer_profile(request):
     customer = User.objects.get(pk=request.user.id)
     profile_form = ProfileForm(instance=profile)
     customer_form = UserForm(instance=customer)
+    print(profile_form)
+    print(customer_form)
     
     if request.method == 'POST':
         profile_form = ProfileForm(request.POST, request.FILES, instance=profile)

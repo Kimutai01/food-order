@@ -3,7 +3,9 @@
 {% block content %}
 {% include 'alerts.html' %}
 
-<div class="bg-gray-300 flex font-sans text-sm font-bold">
+<form class="bg-gray-300 flex font-sans text-sm font-bold"
+ method="POST" action="{% url 'place_order' %}">
+    {% csrf_token %}
     <div class="w-[70%] p-4 bg-white rounded-l-lg shadow-lg">
         <div class="title mb-20">
             <h4 class="text-2xl"><b>Billing address</b></h4>
@@ -23,9 +25,7 @@
                             </div>
 
                             <div class="lg:col-span-2">
-                                <form class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-5"
-                                    method="POST" action="{% url 'checkout' %}">
-                                    {% csrf_token %}
+                                <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-5">
 
                                     <div class="md:col-span-2">
                                         <label for="{{form.first_name.id_for_label}}">First Name</label>
@@ -67,41 +67,24 @@
                                         {{form.city}}
                                     </div>
 
-                                    <div class="md:col-span-5">
-                                        <div class="inline-flex items-center">
-                                            <input type="checkbox" name="billing_same" id="billing_same"
-                                                class="form-checkbox" />
-                                            <label for="billing_same" class="ml-2">My billing address is different
-                                                than above.</label>
-                                        </div>
-                                    </div>
+                                    
 
-                                    <div class="">
-                                        <button type="submit"
-                                            class="p-2  bg-black border-black text-white w-full mt-9">CHECKOUT</button>
-                                    </div>
-                                </form>
+                                    
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <a href="https://www.buymeacoffee.com/dgauderman" target="_blank"
-                    class="md:absolute bottom-0 right-0 p-4 float-right">
-                    <img src="https://www.buymeacoffee.com/assets/img/guidelines/logo-mark-3.svg"
-                        alt="Buy Me A Coffee"
-                        class="transition-all rounded-full w-14 -rotate-45 hover:shadow-sm shadow-lg ring hover:ring-4 ring-white">
-                </a>
+               
             </div>
         </div>
 
-        <div class="back-to-shop mt-36">
-            <a href="#">&leftarrow;</a><span class="text-gray-500">Back to shop</span>
-        </div>
+    
     </div>
 
     <div class="bg-gray-300 rounded-r-lg p-4 text-gray-500">
-        {% if cart_items %}
+        
         {% for item in cart_items %}
         <li id='cart-item-{{item.id}}' class="flex justify-between items-center">
             <img src="{{ item.fooditem.image.url }}" alt="{{ item.fooditem.food_title }}"
@@ -119,7 +102,7 @@
             </div>
         </li>
         {% endfor %}
-        {% endif %}
+     
         <h5><b>Summary</b></h5>
         <hr class="my-5">
         <div class="flex justify-between">
@@ -133,7 +116,7 @@
             <div>
                 {{key}}(<small>{{i}}%</small>)
             </div>
-            <span class="w-1/2 text-right" id="tax-{{key}}">{{j}}</span>
+            <span class=" text-right" id="tax-{{key}}">{{j}}</span>
         </div>
         {% endfor %}
         {% endfor %}
@@ -141,9 +124,29 @@
             <div class="w-1/2">TOTAL PRICE</div>
             <span class="w-1/2 text-right" id='grand_total'>{{grand_total}}</span>
         </div>
-        <a href={% url 'checkout' %} class="p-3 bg-black border-black text-white w-full mt-9">
-            Proceed to checkout
-        </a>
+        <div class="flex justify-between border-t border-gray-200 py-5">
+            <div class="">payment method</div>
+            <label class="flex items-center">
+                <input type="radio" class="form-radio" name="payment_method" value="Paypal" checked>
+                <img src="https://img.icons8.com/color/48/000000/paypal.png" class="w-10 h-10">
+            </label>
+            <label class="flex items-center">
+                <input type="radio" class="form-radio" name="payment_method" value="Mpesa">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/M-PESA_LOGO-01.svg/2560px-M-PESA_LOGO-01.svg.png" class="w-10 h-10">
+            </label>
+        </div>
+        <button type='submit' class="p-3 bg-black border-black text-white w-full mt-9" onclick="return paymethodCheck();">
+            Place order
+        </button>
     </div>
-</div>
+</form>
+
+<script>
+    function paymethodCheck() {
+        let payment = $('input[name="payment_method"]:checked').val();
+       
+        alert('Your payment method is ' + payment);
+        return true;
+    }
+</script>
 {% endblock %}
