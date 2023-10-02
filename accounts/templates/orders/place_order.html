@@ -1,5 +1,4 @@
-{% extends 'main.html' %} {% load static %} {% block content %} {% include
-'alerts.html' %}
+{% extends 'main.html' %} {% load static %} {% block content %}  {% include 'alerts.html' %}
 
 <div class="bg-gray-300 flex font-sans text-sm font-bold">
   <div class="w-[70%] p-4 bg-white rounded-l-lg shadow-lg">
@@ -57,6 +56,10 @@
     >
       Confirm Payment
     </button>
+    <div id="spinner" class="hidden text-center mt-4">
+  <div class="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-gray-900"></div>
+  <p class="mt-2 text-gray-900">Processing your order...</p>
+</div>
   </div>
 </div>
 
@@ -242,6 +245,8 @@
             transaction_id = "{{ order.order_number }}" + String(Math.floor(Math.random() * 100))
 
             sendTransaction(transaction_id,payment_method, element.Message)
+            document.getElementById("spinner").classList.remove("hidden");
+
           }
         });
 
@@ -268,6 +273,7 @@
           return cookieValue;
       }
       const csrftoken = getCookie('csrftoken');
+      const order_complete = "{% url 'order_complete' %}"
     $.ajax({
       type: "POST",
       url: "{% url 'payments' %}",
@@ -280,6 +286,7 @@
       },
       success: function(response){
         console.log(response)
+       window.location.href = order_complete +'?order_no='+response.order_number+'&trans_id='+response.transaction_id
       },
 
     })

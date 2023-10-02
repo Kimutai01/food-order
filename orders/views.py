@@ -11,6 +11,7 @@ import requests
 import time
 from accounts.utils import send_notification
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 
 
 
@@ -118,29 +119,56 @@ def payments(request):
             }
             send_notification(mail_subject, mail_template, context)
             
-            # mail_subject = 'You have recieved a new order'
-            # mail_template = 'orders/new_order.html'
-            # to_emails = []
-            # for i in cart_items:
-            #     if i.fooditem.vendor.user.email not in to_emails:
-            #         to_emails.append(i.fooditem.vendor.user.email)
+            mail_subject = 'You have recieved a new order'
+            mail_template = 'orders/new_order.html'
+            to_emails = []
+            for i in cart_items:
+                if i.fooditem.vendor.user.email not in to_emails:
+                    to_emails.append(i.fooditem.vendor.user.email)
                     
             
-            # print(to_emails)
-            # context = {
-            #     'order': order,
-            #     'user': request.user,
-            #     'to_email': to_emails,
-            # }
+            print(to_emails)
+            context = {
+                'order': order,
+                'user': request.user,
+                'to_email': to_emails,
+            }
             
-            # send_notification(mail_subject, mail_template, context)
+            send_notification(mail_subject, mail_template, context)
             
-            # cart_items.delete()
+            cart_items.delete()
             
-            return HttpResponse('success')
+            response ={
+                'order_number': order.order_number,
+                'transaction_id': transaction_id,
+            }
+            
+            return JsonResponse(response)
         
 
         return HttpResponse('payment successful')
+    
+def order_complete(request):
+    order_number = request.GET.get('order_no')
+    transaction_id = request.GET.get('trans_id')
+    
+    try:
+        order = Order.objects.get(order_number=order_number, payment__transaction_id=transaction_id, is_ordered=True)
+        ordered_food = OrderedFood.objects.filter(order=order)
+        subtotal = 0
+        for item in ordered_food:
+            subtotal += item.price * item.quantity
+        tax_data = json.loads(order.tax_data)
+        context={
+            'order': order,
+            'ordered_food': ordered_food,
+            'subtotal': subtotal,
+            'tax_data': tax_data,
+        }
+        return render(request, 'orders/order_complete.html',context)
+    except:
+        return redirect('home')
+    return render(request, 'orders/order_complete.html')
        
 
 

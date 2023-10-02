@@ -44,14 +44,13 @@ def send_verification_email(request, user,subject, template):
 #     mail = EmailMessage(subject, message, from_email, to=[to_email])
 #     mail.send()
 
-def send_notification(subject,template,context):
+def send_notification(subject, template, context):
     from_email = settings.DEFAULT_FROM_EMAIL
     message = render_to_string(template, context)
-    if(isinstance(context['to_email'], str)):
-        to_email = []
-        to_email.append(context['to_email'])
-    else:
-        to_email = context['to_email']
-    to_email = context['to_email']
+    to_email = context.get('to_email', [])
+    
+    if isinstance(to_email, str):
+        to_email = [to_email] 
+    
     mail = EmailMessage(subject, message, from_email, to=to_email)
     mail.send()

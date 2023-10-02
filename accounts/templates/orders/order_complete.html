@@ -1,0 +1,122 @@
+{% extends 'main.html' %} {% load static %} {% block content %}  {% include 'alerts.html' %}
+
+<div class="container mt-5 mb-5">
+    <div class="flex justify-center">
+        <div class="md:w-8/12">
+            <div class="bg-white p-3">
+                <div class="flex flex-row">
+                    <div class="md:w-6/12">
+                        <h4 class="mt-2 mb-3">Thank you for your order.</h4>
+                    </div>
+                    
+                </div>
+
+                <h6 class="mt-4">Hello {{ order.name }},</h6><span>Review your order details below.</span>
+                <hr class="my-4">
+
+                <div class="w-full overflow-x-auto">
+  <table class="min-w-full table-auto">
+    <thead>
+      <tr>
+        <th class="px-4 py-2">Order Date</th>
+        <th class="px-4 py-2">Order No</th>
+        <th class="px-4 py-2">Payment Method</th>
+        <th class="px-4 py-2">Transaction ID</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="border px-4 py-2">{{ order.created_at }}</td>
+        <td class="border px-4 py-2">{{ order.order_number }}</td>
+        <td class="border px-4 py-2">{{ order.payment_method }}</td>
+        <td class="border px-4 py-2">{{ order.payment.transaction_id }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+                <hr class="my-4">
+                <table class="table-auto">
+                    <tbody>
+                       
+                    </tbody>
+                </table>
+
+                <div class="flex mt-5 items-center">
+                    <div class="w-6/12">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPTYY-7nD8CaanGKqY9WoPgv0zvOLkVYW9xOcxw1I&s" width="200">
+                    </div>
+                    <div class="w-6/12">
+                        <ul>
+                            <li class="mb-2">
+                                Subtotal
+                                <span class="price float-right">
+                                    <span class="currency">$</span>
+                                    <span id="subtotal">{{ subtotal }}</span>
+                                </span>
+                            </li>
+                            <li>
+                                  {% for key,value in tax_data.items %}
+        {% for i,j in value.items %}
+        <div class="flex justify-between border-t border-gray-200 py-5 w-full">
+            <div>
+                {{key}}(<small>{{i}}%</small>)
+            </div>
+            <span class=" text-right" id="tax-{{key}}">{{j}}</span>
+        </div>
+        {% endfor %}
+        {% endfor %}
+                            </li>
+
+                            
+
+                            <li class="font-semibold mb-2">
+                                TOTAL
+                                <span class="price float-right">
+                                    <span class="currency">$</span>
+                                    <span id="total">{{ order.total }}</span>
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <hr class="my-4">
+                <div id="qrcode"></div>
+                <div class="flex justify-between">
+                    <div>
+                        <span class="block font-semibold">Thanks for ordering with us.</span>
+                        <span>Munchies Team</span>
+                    </div>
+                    <div class="flex justify-end items-end">
+                        <span class="block font-semibold">Need help?</span>
+                        <span>Call - +25470000000</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+function generateQRCode(orderNumber) {
+  // Get the URL of the current page with the order number as a query parameter
+  const currentPageURL = window.location.href;
+  const qrCodeText = `${currentPageURL}?order_number=${orderNumber}`;
+
+  // Initialize the QR code generator
+  const qrcode = new QRCode(document.getElementById("qrcode"), {
+    text: qrCodeText,
+    width: 128,
+    height: 128,
+  });
+
+  // Display the QR code on the page
+  qrcode.makeCode(qrCodeText);
+}
+
+// Call this function with the order number when you have the order information
+const orderNumber = "{{ order.order_number }}";
+generateQRCode(orderNumber);
+    </script>
+
+
+{% endblock %}
