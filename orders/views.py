@@ -164,7 +164,9 @@ def order_complete(request):
             'ordered_food': ordered_food,
             'subtotal': subtotal,
             'tax_data': tax_data,
+            'to_email': order.email,
         }
+        send_notification('Order Completed', 'orders/order_complete.html', context)
         return render(request, 'orders/order_complete.html',context)
     except:
         return redirect('home')

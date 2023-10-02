@@ -183,7 +183,7 @@ EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
 EMAIL_PORT = config("EMAIL_PORT", cast=int)
 EMAIL_USE_TLS = config("EMAIL_USE_TLS", cast=bool)
 EMAIL_USE_SSL = config("EMAIL_USE_SSL", cast=bool)
-DEFAULT_FROM_EMAIL = 'vetinary services around you <kiprotichkimutai01@gmail.com>'
+DEFAULT_FROM_EMAIL = 'munchies <kiprotichkimutai01@gmail.com>'
 
 GOOGLE_API_KEY = config("GOOGLE_API_KEY")
 

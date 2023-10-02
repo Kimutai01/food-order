@@ -28,6 +28,7 @@ def send_verification_email(request, user,subject, template):
     })
     to_email = user.email
     mail = EmailMessage(subject, message, from_email, to=[to_email])
+    mail.content_subtype = "html"
     mail.send()
     
 # def send_reset_password_email(request,user):
@@ -53,4 +54,5 @@ def send_notification(subject, template, context):
         to_email = [to_email] 
     
     mail = EmailMessage(subject, message, from_email, to=to_email)
+    mail.content_subtype = "html"
     mail.send()
