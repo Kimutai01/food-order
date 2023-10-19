@@ -2,7 +2,7 @@
 
 Hi {{ user.first_name }}, 
 
-please click the link below to confirm your registration:
+please click the link below to confirm your registration of your account at munchies:
 
 http://{{ domain }}{% url 'activate' uidb64=uid token=token %}
 {% endautoescape %}
